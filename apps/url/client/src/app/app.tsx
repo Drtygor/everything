@@ -1,51 +1,49 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
+import { FormEvent, useCallback, useState } from 'react';
 
-import NxWelcome from './nx-welcome';
-
-import { Route, Routes, Link } from 'react-router-dom';
+type Shortened = {
+  original: string;
+  short: string;
+};
 
 export function App() {
+  const [urls, setUrls] = useState<Array<Shortened>>([]);
+  const [inputUrl, setInputUrl] = useState<string>('');
+  const onSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+
+      const newUrl: Shortened = {
+        original: inputUrl,
+        short: 'short.com/123',
+      };
+
+      setUrls([newUrl, ...urls]);
+      setInputUrl('');
+    },
+    [urls, setUrls, inputUrl, setInputUrl]
+  );
   return (
     <div>
-      <NxWelcome title="url-client" />
+      <h1>My URL Shortener</h1>
+      <form onSubmit={onSubmit}>
+        <label>URL</label>
+        <input
+          value={inputUrl}
+          onChange={(e) => {
+            setInputUrl(e.target.value);
+          }}
+          placeholder="www.my-super-long-url-here.com/12345"
+        />
+        <button type="submit">Generate</button>
+      </form>
 
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
+      <ul>
+        {urls.map((u) => (
           <li>
-            <Link to="/">Home</Link>
+            {u.short} - {u.original}
           </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
-      </div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
-      </Routes>
-      {/* END: routes */}
+        ))}
+      </ul>
     </div>
   );
 }
