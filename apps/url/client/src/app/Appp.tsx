@@ -1,4 +1,16 @@
-export function App() {
+import React, { FormEvent, useState, useCallback } from 'react';
+import UrlForm from './UrlForm'; 
+import ShortenedUrlList from './ShortenedUrlList';
+
+
+export type Shortened = {
+  original: string;
+  short: string;
+};
+
+
+
+export function Appp() {
     const [urls, setUrls] = useState<Array<Shortened>>([]);
     const [inputUrl, setInputUrl] = useState<string>('');
     const onSubmit = useCallback(
@@ -24,3 +36,4 @@ export function App() {
     );
   }
   
+  export default Appp;

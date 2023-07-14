@@ -1,3 +1,7 @@
+import React from 'react';
+import { Shortened } from './Appp';
+
+
 type ShortenedUrlItemProps = {
     url: Shortened;
   };
@@ -7,3 +11,5 @@ type ShortenedUrlItemProps = {
       {url.short} - {url.original}
     </li>
   );
+
+export default ShortenedUrlItem;

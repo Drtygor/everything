@@ -1,3 +1,6 @@
+import { FormEvent, useCallback, useState } from 'react';
+
+
 type UrlFormProps = {
     inputUrl: string;
     onSubmit: (event: FormEvent) => void;
@@ -17,3 +20,5 @@ type UrlFormProps = {
       <button type="submit">Generate</button>
     </form>
   );
+
+  export default UrlForm;

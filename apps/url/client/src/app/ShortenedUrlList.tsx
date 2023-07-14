@@ -1,4 +1,9 @@
-type ShortenedUrlListProps = {
+import React from 'react';
+import { Shortened } from './Appp'; 
+import ShortenedUrlItem from './ShortenedUrlItem';
+
+
+export type ShortenedUrlListProps = {
     urls: Array<Shortened>;
   };
   
@@ -10,3 +15,5 @@ type ShortenedUrlListProps = {
     </ul>
   );
   
+
+  export default ShortenedUrlList;
