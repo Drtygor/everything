@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shortened } from './Appp'; 
+import { Shortened } from './app'; 
 import ShortenedUrlItem from './ShortenedUrlItem';
 
 
