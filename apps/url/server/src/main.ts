@@ -1,54 +1,49 @@
 import express from 'express';
 import cors from 'cors';
 
-// Mutable Application State
+export type UrlMap = Record<number, string>;
 
-/**
- * A map of Short URL IDs to full original URLs
- * http://localhost/s/123, http://example.com/...
- *
- * { 123 -> 'http://example.com/...' }
- */
-const urlmap: Record<number, string> = {};
+export function createApp(urlmap: UrlMap = {}) {
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
 
-// Actions
+  app.post('/api/shorten', (req, res) => {
+    const original = req.body.original;
+    if (!original) {
+      res.status(400).send({ error: 'Missing "original" field in request body.' });
+      return;
+    }
+    
+    const id = Object.keys(urlmap).length;
+    const short = `http://localhost:3333/s/${id}`;
+    urlmap[id] = original;
 
-/**
- * Produces the shortened form of a given URL
- * Invariant: url is a valid URL, and does not already exist as a value in urlmap
- * Effect: updates the `urlmap` to record the url and its shortened version.
- */
-function shortenUrl(url: string): string {
-  const id = Object.keys(urlmap).length; // number of elements in hash table
-  const short = `http://localhost:3333/s/${id}`;
-  urlmap[id] = url;
-  return short;
+    res.send({
+      short: short,
+      original: original,
+    });
+  });
+
+  app.get('/s/:id', (req, res, next) => {
+    const id = Number(req.params.id);
+    const original = urlmap[id];
+    if (!original) {
+      return next(new Error('Invalid URL ID.'));
+    }
+    res.redirect(original);
+  });
+
+  return app;
 }
 
-// App
+// The server instantiation and the URL base for shortenUrl should be in a separate file
+// that you do not import during testing.
 
-const app = express();
-app.use(express.json());
-app.use(cors());
-
-app.post('/api/shorten', (req, res) => {
-  const original = req.body.original;
-  const short = shortenUrl(original);
-
-  res.send({
-    short: short,
-    original: original,
+if (process.env.NODE_ENV !== 'test') {
+  const port = process.env.PORT || 3333;
+  const server = createApp().listen(port, () => {
+    console.log(`Listening at http://localhost:${port}/api`);
   });
-});
-
-app.get('/s/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const original = urlmap[id];
-  res.redirect(original);
-});
-
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+  server.on('error', console.error);
+}
