@@ -1,40 +1,74 @@
-import React, { FormEvent, useState, useCallback } from 'react';
-import UrlForm from './UrlForm'; 
-import ShortenedUrlList from './ShortenedUrlList';
-import axios from 'axios';
+import { FormEvent, useCallback, useState } from 'react';
 
-export type Shortened = {
+type Shortened = {
   original: string;
   short: string;
 };
 
+function UrlForm({onSubmit}: {onSubmit: (url: string) => void}) {
+  const [inputUrl, setInputUrl] = useState<string>('');
+
+  const handleSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+      onSubmit(inputUrl);
+      setInputUrl('');
+    },
+    [inputUrl, onSubmit]
+  );
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>URL</label>
+      <input
+        value={inputUrl}
+        onChange={(e) => {
+          setInputUrl(e.target.value);
+        }}
+        placeholder="www.my-super-long-url-here.com/12345"
+      />
+      <button type="submit">Generate</button>
+    </form>
+  )
+}
+
+
+function UrlList({urls}: {urls: Array<Shortened>}) {
+  return (
+    <ul>
+      {urls.map((u) => (
+        <li>
+          {u.short} - {u.original}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 
 
 export function App() {
-    const [urls, setUrls] = useState<Array<Shortened>>([]);
-    const [inputUrl, setInputUrl] = useState<string>('');
-    const onSubmit = useCallback(
-      async (event: FormEvent) => {
-        event.preventDefault();
-  
-        const response = await axios.post(`http://localhost:3333/api/shorten`, {
-          original: inputUrl,
-        });
-  
-        const newUrl = response.data as Shortened; // 🚨 This should set off alarm bells in your head! Why?
-  
-        setUrls([newUrl, ...urls]);
-        setInputUrl('');
-      },
-      [urls, setUrls, inputUrl, setInputUrl]
-    );
-    return (
-      <div>
-        <h1>My URL Shortener</h1>
-        <UrlForm inputUrl={inputUrl} setInputUrl={setInputUrl} onSubmit={onSubmit} />
-        <ShortenedUrlList urls={urls} />
-      </div>
-    );
-  }
-  
-  export default App;
+  const [urls, setUrls] = useState<Array<Shortened>>([]);
+
+  const handleSubmit = useCallback(
+    (url: string) => {
+      const newUrl: Shortened = {
+        original: url,
+        short: 'short.com/123', // Here, you would likely want to replace this with a call to your URL shortening function.
+      };
+
+      setUrls([newUrl, ...urls]);
+    },
+    [urls, setUrls]
+  );
+
+  return (
+    <div>
+      <h1>My URL Shortener</h1>
+      <UrlForm onSubmit={handleSubmit} />
+      <UrlList urls={urls} />
+    </div>
+  );
+}
+
+export default App;
