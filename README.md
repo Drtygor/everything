@@ -28,6 +28,10 @@ For end-to-end tests with Cypress, use:
 $ npm run test:e2e
 
 ## Future Enhancements
-Implementation of Authentication and Authorization to ensure secure access.
-Incorporation of Global State Management and Query Caching for enhanced performance.
-Improved UI/UX with the introduction of Frontend error/loading/success patterns and conditional rendering.
+In order to improve the quality of the codebase, I would recommend the following:
+
+Implementing Authentication and Authorization: Security is key in every application. Currently, our application is lacking in this area. By adding Authentication and Authorization, we can ensure that only authenticated and authorized users have access to certain resources.
+
+Adding Global State Management and Query Caching: The use of global state management systems like Redux or Zustand can help manage the state of the application in a more efficient manner. Additionally, query caching (via tools like React Query or SWR) would ensure that the application can run faster and be more efficient by reusing previously fetched data.
+
+Incorporate Frontend error/loading/success patterns and conditional rendering: Good UI practices are essential for a great user experience. We should handle potential errors gracefully, give feedback to the user when data is being loaded, and use conditional rendering to ensure that the UI only shows what the user needs at that time.
