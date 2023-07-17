@@ -1,23 +1,30 @@
-# Everything
+# URL
 
-This is the C4C monorepo containing all of our active projects.
+## Overview
 
-Deployable units exist in `/apps`, inside each folder there is a README explaining how that unit is tested and deployed.
+This project is a simple web application built with React for the client-side and Express for the server-side. The application has been designed and tested with a variety of testing suites, including component tests in React, end-to-end tests using Cypress, and unit tests for Express.
 
-Business logic and supporting library for those deployable units exist in `/libs`. These are composable units of software that are not coupled to a specific deployment framework or strategy, and are meant to be easily reused in future projects.
+## Features
 
-The purpose of `README.md`s in this repository are to explain the usage of the application. The bare minimum you need to get it running. More detailed developer and public documentation exists on the wiki. `README.md`s will often link to relevant wiki pages.
+Client-side Rendering: The application utilizes React to build a dynamic, user-friendly interface.
+RESTful API: The server-side logic uses Express to create API endpoints, which the client interacts with.
+Persistent Data Storage: Data persistence is ensured through the use of a database.
 
+## Installation and Setup
 
-Links to Project `README.md`
+To run this project, you will need to install it locally using npm:
+$ cd ../project_directory
+$ npm install
+$ npm start
+Testing
 
-- [Monarch](./apps/monarch/README.md)
-- [c4cneu.com](./apps/dotcom/README.md)
+This project uses Jest and React Testing Library for unit and component tests, and Cypress for end-to-end tests. To run the tests, use:
+$ npm test
 
+For end-to-end tests with Cypress, use:
+$ npm run test:e2e
 
-## 🔨 Development
-1. Install Node v16.x
-2. Clone this repo
-3. `yarn install`
-
-When adding new dependencies, use `yarn add` or its dev dependency equivalent. Thanks to Nx, each package will only be installed once, and each app knows how to bundle itself correctly based on its dependencies.
+## Future Enhancements
+Implementation of Authentication and Authorization to ensure secure access.
+Incorporation of Global State Management and Query Caching for enhanced performance.
+Improved UI/UX with the introduction of Frontend error/loading/success patterns and conditional rendering.
