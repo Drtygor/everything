@@ -13,15 +13,18 @@ Persistent Data Storage: Data persistence is ensured through the use of a databa
 ## Installation and Setup
 
 To run this project, you will need to install it locally using npm:
+
 $ cd ../project_directory
 $ npm install
 $ npm start
 Testing
 
 This project uses Jest and React Testing Library for unit and component tests, and Cypress for end-to-end tests. To run the tests, use:
+
 $ npm test
 
 For end-to-end tests with Cypress, use:
+
 $ npm run test:e2e
 
 ## Future Enhancements
